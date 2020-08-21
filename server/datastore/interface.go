@@ -1,6 +1,6 @@
 package datastore
 
-import "animals/server/entities"
+import "github.com/EvgenyiK/animals/server/entities"
 
 //Animal ...
 type Animal interface{
