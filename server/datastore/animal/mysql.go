@@ -1,9 +1,11 @@
 package animal
 
 import (
-	"animals/server/entities"
+	"github.com/EvgenyiK/animals/server/entities"
 	"database/sql"
 )
+
+
 
 type AnimalStorer struct {
 	db *sql.DB
