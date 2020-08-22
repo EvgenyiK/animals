@@ -23,16 +23,16 @@ func init() {
 }
 
 func initializeMySQL(t *testing.T) *sql.DB {
-	conf:= driver.MySQLConfig{
-		Host: os.Getenv("HOST"),
-		User: os.Getenv("USER"),
+	conf := driver.MySQLConfig{
+		Host:     os.Getenv("HOST"),
+		User:     os.Getenv("USER"),
 		Password: os.Getenv("PASSWORD"),
-		Port: os.Getenv("PORT"),
-		Db: os.Getenv("DB"),
+		Port:     os.Getenv("PORT"),
+		Db:       os.Getenv("DB"),
 	}
 
 	var err error
-	db,err:= driver.ConnectToMySQL(conf)
+	db, err := driver.ConnectToMySQL(conf)
 	if err != nil {
 		t.Errorf("could not connect to sql, err:%v", err)
 	}
