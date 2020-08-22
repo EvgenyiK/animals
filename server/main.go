@@ -24,7 +24,7 @@ func init() {
 func main() {
 	conf:= driver.MySQLConfig{
 		Host: os.Getenv("HOST"),
-		User: os.Getenv("USER"),
+		User: os.Getenv("USERD"),
 		Password: os.Getenv("PASSWORD"),
 		Port: os.Getenv("PORT"),
 		Db: os.Getenv("DB"),
