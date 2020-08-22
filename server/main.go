@@ -23,11 +23,11 @@ func init() {
 
 func main() {
 	conf:= driver.MySQLConfig{
-		Host: os.LookupEnv("HOST"),
-		User: os.LookupEnv("USER"),
-		Password: os.LookupEnv("PASSWORD"),
-		Port: os.LookupEnv("PORT"),
-		Db: os.LookupEnv("DB"),
+		Host: os.Getenv("HOST"),
+		User: os.Getenv("USER"),
+		Password: os.Getenv("PASSWORD"),
+		Port: os.Getenv("PORT"),
+		Db: os.Getenv("DB"),
 	}
 	var err error
 	db, err:= driver.ConnectToMySQL(conf)
@@ -38,6 +38,6 @@ func main() {
 	datastore:= animal.New(db)
 	handler:= handlerAnimal.New(datastore)
 
-	http.HandlerFunc("/animal", handler.Handler)
+	http.HandleFunc("/animal", handler.Handler)
 	fmt.Println(http.ListenAndServe(":9000", nil))
 }

@@ -2,11 +2,11 @@ package animal
 
 import (
 	"database/sql"
-	"log"
+	//"log"
 	"os"
 	"reflect"
 
-	"github.com/joho/godotenv"
+	//"github.com/joho/godotenv"
 
 	"github.com/EvgenyiK/animals/server/entities"
 
@@ -15,12 +15,7 @@ import (
 	"testing"
 )
 
-func init() {
-    // loads values from .env into the system
-    if err := godotenv.Load(); err != nil {
-        log.Print("No .env file found")
-    }
-}
+
 
 func initializeMySQL(t *testing.T) *sql.DB {
 	conf := driver.MySQLConfig{
