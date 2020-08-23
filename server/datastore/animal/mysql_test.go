@@ -2,11 +2,9 @@ package animal
 
 import (
 	"database/sql"
-	//"log"
+	
 	"os"
 	"reflect"
-
-	//"github.com/joho/godotenv"
 
 	"github.com/EvgenyiK/animals/server/entities"
 
