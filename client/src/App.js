@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import API from "./utils/API";
+import Animal from "./Animal";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component{
+  constructor(props){
+    super(props);
+
+    this.state = {
+      isLoading: true,
+      id: null,
+      avatar: null,
+      email: null
+    };
+  }
+  render(){
+
+    const { id, name, age, isLoading } = this.state;
+
+    return (<Animal isLoading={isLoading} id={id} name={name} age={age} />);
+  }
+
+  async componentDidMount(){
+    // Load async data.
+    let animalData = await API.get('/', {
+      params:{
+        results:1,
+        inc: 'id,name,age'
+      }
+    });
+    animalData = animalData.data.results[0];
+    const id = animalData.id;
+    const name = animalData.name;
+    const age = animalData.age;
+
+    this.setState({
+      ...this.state, ...{
+        isLoading: false,
+        id,
+        name,
+        age
+      }
+    });
+    // Update state with new data.
+    // Re-render our component.
+  }
+
 }
 
 export default App;
