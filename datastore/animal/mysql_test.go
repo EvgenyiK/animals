@@ -28,7 +28,7 @@ func initializeMySQL(t *testing.T) *sql.DB {
 	return db
 }
 
-func testDatastore(t *testing.T) {
+func TestDatastore(t *testing.T) {
 	db := initializeMySQL(t)
 	a := New(db)
 	testAnimalStorer_Get(t, a)
