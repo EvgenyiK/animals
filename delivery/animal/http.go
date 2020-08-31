@@ -2,10 +2,13 @@ package animal
 
 import (
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 
 	"github.com/EvgenyiK/animals/datastore"
+	"github.com/EvgenyiK/animals/entities"
 )
 
 type AnimalHandler struct {
@@ -38,13 +41,34 @@ func (a AnimalHandler) get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp,err:= a.datastore.Get(i)
+	resp, err := a.datastore.Get(i)
 	if err != nil {
 		_, _ = w.Write([]byte("could not retrieve email"))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	body,_:=json.Marshal(resp)
-	_, _= w.Write(body)
+	body, _ := json.Marshal(resp)
+	_, _ = w.Write(body)
+}
+
+func (a AnimalHandler) create(w http.ResponseWriter, r *http.Request) {
+	var animal entities.Animal
+	body, _ := ioutil.ReadAll(r.Body)
+	err := json.Unmarshal(body, &animal)
+	if err != nil {
+		fmt.Println(err)
+		_, _ = w.Write([]byte("invalid body"))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	resp, err := a.datastore.Create(animal)
+	if err != nil {
+		_, _ = w.Write([]byte("could not create animal"))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	body, _ = json.Marshal(resp)
+	_, _ = w.Write(body)
 }

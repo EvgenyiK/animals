@@ -15,15 +15,15 @@ func New(db *sql.DB) AnimalStorer {
 }
 
 func (a AnimalStorer) Get(id int) ([]entities.Animal, error) {
-	var(
+	var (
 		rows *sql.Rows
-		err error
+		err  error
 	)
 
-	if id !=0 {
+	if id != 0 {
 		rows, err = a.db.Query("SELECT * FROM animals where id = ?", id)
-	}else{
-		rows,err =  a.db.Query("SELECT * FROM animals")
+	} else {
+		rows, err = a.db.Query("SELECT * FROM animals")
 	}
 
 	if err != nil {
@@ -32,22 +32,22 @@ func (a AnimalStorer) Get(id int) ([]entities.Animal, error) {
 
 	defer rows.Close()
 	var animals []entities.Animal
-	for rows.Next(){
+	for rows.Next() {
 		var a entities.Animal
-		_= rows.Scan(&a.ID,&a.Name,&a.Age)
+		_ = rows.Scan(&a.ID, &a.Name, &a.Age)
 		animals = append(animals, a)
 	}
 	return animals, nil
 }
 
-func (a AnimalStorer)Create(animal entities.Animal) (entities.Animal, error) {
-	res, err:= a.db.Exec("INSERT INTO animals (name,age) VALUES(?,?)", animal.Name, animal.Age)
+func (a AnimalStorer) Create(animal entities.Animal) (entities.Animal, error) {
+	res, err := a.db.Exec("INSERT INTO animals (name,age) VALUES(?,?)", animal.Name, animal.Age)
 	if err != nil {
 		return entities.Animal{}, err
 	}
 
-	id, _:= res.LastInsertId()
+	id, _ := res.LastInsertId()
 	animal.ID = int(id)
 
-	return animal,nil
+	return animal, nil
 }
