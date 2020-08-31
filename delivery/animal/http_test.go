@@ -34,23 +34,23 @@ func TestAnimalHandler_Handler(t *testing.T) {
 	}
 }
 
-func TestAnimalGet(t *testing.T)  {
-	testcases:= []struct{
-		id string
+func TestAnimalGet(t *testing.T) {
+	testcases := []struct {
+		id       string
 		response []byte
 	}{
-		{"1",[]byte("could not retrieve animal")},
-		{"1a",[]byte("invalid parametr id")},
-		{"2",[]byte(`[{"ID":2, "Name":"Dog","Age":8}]`)},
-		{"0",[]byte(`[{"ID":1, "Name":"Ken","Age":23},{"ID":2,"Name":"Dog","Age":8}]`)},
+		{"1", []byte("could not retrieve animal")},
+		{"1a", []byte("invalid parametr id")},
+		{"2", []byte(`[{"ID":2, "Name":"Dog","Age":8}]`)},
+		{"0", []byte(`[{"ID":1, "Name":"Ken","Age":23},{"ID":2,"Name":"Dog","Age":8}]`)},
 	}
 
 	for i, v := range testcases {
-		req:= httptest.NewRequest("GET","/animal?id="+v.id, nil)
-		w:= httptest.NewRecorder()
+		req := httptest.NewRequest("GET", "/animal?id="+v.id, nil)
+		w := httptest.NewRecorder()
 
-		a:= New(mockDatastore{})
-		a.get(w,req)
+		a := New(mockDatastore{})
+		a.get(w, req)
 
 		if !reflect.DeepEqual(w.Body, bytes.NewBuffer(v.response)) {
 			t.Errorf("[TEST%d]Failed. Got %v\tExpected %v\n", i+1, w.Body.String(), string(v.response))
@@ -58,7 +58,7 @@ func TestAnimalGet(t *testing.T)  {
 	}
 }
 
-func TestAnimalPost(t *testing.T)  {
+func TestAnimalPost(t *testing.T) {
 	testcases := []struct {
 		reqBody  []byte
 		respBody []byte
@@ -81,20 +81,19 @@ func TestAnimalPost(t *testing.T)  {
 	}
 }
 
-
 type mockDatastore struct{}
 
-func(m mockDatastore) Get(id int) ([]entities.Animal, error) {
+func (m mockDatastore) Get(id int) ([]entities.Animal, error) {
 	if id == 1 {
 		return nil, errors.New("db error")
-	}else if id == 2{
+	} else if id == 2 {
 		return []entities.Animal{{2, "Dog", 8}}, nil
 	}
 
-	return []entities.Animal{{1, "Ken", 23},{2,"Dog", 8}}, nil
+	return []entities.Animal{{1, "Ken", 23}, {2, "Dog", 8}}, nil
 }
 
-func (m mockDatastore)Create(animal entities.Animal) (entities.Animal, error) {
+func (m mockDatastore) Create(animal entities.Animal) (entities.Animal, error) {
 	if animal.Age == 12 {
 		return entities.Animal{}, errors.New("db error")
 	}

@@ -2,22 +2,21 @@ package main
 
 import (
 	"fmt"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
-	"github.com/joho/godotenv"
 
-	 handlerAnimal "github.com/EvgenyiK/animals/delivery/animal"
 	"github.com/EvgenyiK/animals/datastore/animal"
+	handlerAnimal "github.com/EvgenyiK/animals/delivery/animal"
 	"github.com/EvgenyiK/animals/driver"
 )
 
-
 func init() {
-    // loads values from .env into the system
-    if err := godotenv.Load(); err != nil {
-        log.Print("No .env file found")
-    }
+	// loads values from .env into the system
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
 }
 
 func main() {
@@ -31,14 +30,14 @@ func main() {
 
 	var err error
 
-	db,err:= driver.ConnectToMySQL(conf)
+	db, err := driver.ConnectToMySQL(conf)
 	if err != nil {
 		log.Println("could not connect to sql, err:", err)
 		return
 	}
 
-	datastore:= animal.New(db)
-	handler:= handlerAnimal.New(datastore)
+	datastore := animal.New(db)
+	handler := handlerAnimal.New(datastore)
 
 	http.HandleFunc("/animal", handler.Handler)
 	fmt.Println(http.ListenAndServe(":9000", nil))
